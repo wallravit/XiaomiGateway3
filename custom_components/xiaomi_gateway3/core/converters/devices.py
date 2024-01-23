@@ -1092,7 +1092,11 @@ DEVICES += [{
     # very simple relays with binding
     "TS0011": ["Tuya", "Single Switch (no N)", "TS0011"],
     "support": 5,
-    "spec": [ZOnOffConv("switch", "switch", bind=True)],
+    "spec": [
+        ZOnOffConv("switch", "switch", bind=True),
+        ZTuyaPowerOn,
+        ZTuyaPlugModeConv("mode", "select", enabled=False),
+    ],
 }, {
     # very simple 2 gang relays with binding
     "TS0012": ["Tuya", "Double Switch", "TS0012"],
@@ -1764,7 +1768,7 @@ DEVICES += [{
         Converter("light", "light", mi="2.p.1"),
         BrightnessConv("brightness", mi="2.p.2", parent="light", max=100),
     ]
-},{
+}, {
     # brightness 1..100, color_temp 2700..6500
     3416: ["PTX", "Mesh Downlight", "090615.light.mlig01"],
     4924: ["PTX", "Mesh Downlight", "090615.light.mlig02"],
@@ -1875,7 +1879,9 @@ DEVICES += [{
     ]
 }, {
     # https://home.miot-spec.com/spec/jymc.light.falmp
+    # https://home.miot-spec.com/spec/ftd.light.ftdlmp
     10729: ["Unknown", "Mesh Light", "jymc.light.falmp"],
+    12066: ["Unknown", "Mesh Light", "ftd.light.ftdlmp"],
     "spec": [
         Converter("light", "light", mi="2.p.1"),
         BrightnessConv("brightness", mi="2.p.2", parent="light", max=100),
@@ -2706,12 +2712,16 @@ DEVICES += [{
         Converter("channel_1", "switch", mi="2.p.1"),
         Converter("channel_2", "switch", mi="3.p.1"),
 
-        Converter("action", "sensor", enabled=False),
-
-        ButtonMIConv("button_1", mi="7.e.1", value=1),
-        ButtonMIConv("button_2", mi="7.e.2", value=1),
+        BoolConv("wireless_1", "switch", mi="2.p.3"),
+        BoolConv("wireless_2", "switch", mi="3.p.3"),
 
         Converter("led", "switch", mi="5.p.1"),
+
+        Converter("compatible_mode", "switch", mi="7.p.4"),
+
+        Action,
+        ButtonMIConv("button_1", mi="7.e.1", value=1),
+        ButtonMIConv("button_2", mi="7.e.2", value=1),
     ],
 }, {
     2274: ["Linptech", "Lingpu Triple Wall Switch", "linp.switch.q3s3"],
